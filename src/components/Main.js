@@ -1,28 +1,50 @@
-import React from 'react';
-import Cousteau from '../images/J.E.Cousteau.jpg'
+import React, { useState, useEffect } from 'react';
+import api from '../utils/Api';
 
 
 function Main({onEditProfile, onAddPlace, onEditAvatar}) {
+  const [userName, setUserName] = useState('');
+  const [userDescription, setUserDescription] = useState('');
+  const [userAvatar, setUserAvatar] = useState('');
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    api.getUserInfo()
+    .then((userData) => {
+      setUserName (userData.name);
+      setUserDescription(userData.about);
+      setUserAvatar(userData.avatar);
+    })
+    .catch((err) => console.log(err));
+  }, [userName, userDescription, userAvatar])
+
+  useEffect(() => {
+    api.getInitialCards()
+    .then((data) => {
+      setCards(data)
+    })
+    .catch((err) => console.log(err));
+  }, [])
   
   return (
   <main className="main">
     <section className="profile">
-      <div className="profile__avatar-container">
-        <img className="profile__avatar" src={Cousteau} alt="Жак-Ив Кусто"/>
-        <button className="profile__avatar-button" onClick={onEditAvatar} type="button" aria-label="Кнопка редактирования"></button>
+      <div className="profile__avatar-container" style={{ backgroundImage: `url(${userAvatar})` }}>
+        <img className="profile__avatar"  alt={userName}/>
+        <button className="profile__avatar-button" onClick={onEditAvatar} type="button" ariaLabel="Кнопка редактирования"></button>
       </div>
       <div className="profile__info">
         <div className="profile__wrapper">
-          <h1 className="profile__heading">Жак-Ив Кусто</h1>
+          <h1 className="profile__heading">{userName}</h1>
           <button className="profile__edit-button" onClick={onEditProfile} type="button" aria-label="Кнопка редактирования"></button>
         </div>
-        <p className="profile__heading-description">Исследователь океана</p>
+        <p className="profile__heading-description">{userDescription}</p>
       </div>
       <button className="profile__add-button" onClick={onAddPlace} type="button" aria-label="Кнопка добавить"></button>
     </section>
     <section className="elements">
       <ul className="elements-list">
-
+        {cards.map((card) => {})}
      </ul>
     </section>
   </main>
