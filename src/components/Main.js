@@ -6,7 +6,6 @@ function Main({onEditProfile, onAddPlace, onEditAvatar}) {
   const [userName, setUserName] = useState('');
   const [userDescription, setUserDescription] = useState('');
   const [userAvatar, setUserAvatar] = useState('');
-  const [cards, setCards] = useState([]);
 
   useEffect(() => {
     api.getUserInfo()
@@ -17,14 +16,6 @@ function Main({onEditProfile, onAddPlace, onEditAvatar}) {
     })
     .catch((err) => console.log(err));
   }, [userName, userDescription, userAvatar])
-
-  useEffect(() => {
-    api.getInitialCards()
-    .then((data) => {
-      setCards(data)
-    })
-    .catch((err) => console.log(err));
-  }, [])
   
   return (
   <main className="main">
@@ -41,11 +32,6 @@ function Main({onEditProfile, onAddPlace, onEditAvatar}) {
         <p className="profile__heading-description">{userDescription}</p>
       </div>
       <button className="profile__add-button" onClick={onAddPlace} type="button" aria-label="Кнопка добавить"></button>
-    </section>
-    <section className="elements">
-      <ul className="elements-list">
-        {cards.map((card) => {})}
-     </ul>
     </section>
   </main>
   );

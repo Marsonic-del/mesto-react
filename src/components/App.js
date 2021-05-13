@@ -4,6 +4,7 @@ import Main from './Main';
 import Footer from './Footer';
 import Card from './Card';
 import PopupWithForm from './PopupWithForm';
+import ImagePopup from './ImagePopup';
 import api from '../utils/Api';
 
 
@@ -11,8 +12,10 @@ function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
+  const [isImagePopupOpen, setImagePopupOpen] = useState(false);
   const [popupOpen, setIsPopupOpen] = useState('');
   const [cards, setCards] = useState([]);
+  const [selectedCard, setSelectedCard] = useState({});
 
   useEffect(() => {
     api.getInitialCards()
@@ -21,6 +24,15 @@ function App() {
       })
       .catch((err) => console.log(err));
   }, [])
+
+  function handleCardClick (e) {
+    setSelectedCard(cards.find(card => 
+      card.link === e.target.src
+    ))
+    setImagePopupOpen(true);
+    setIsPopupOpen
+    ('popup_opened');
+  }
 
   function handleEditProfileClick() {
     setEditProfilePopupOpen(true);
@@ -40,6 +52,7 @@ function App() {
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
     setEditAvatarPopupOpen(false);
+    setSelectedCard(false);
   }
   return (
     <div className="App">
@@ -51,7 +64,7 @@ function App() {
                 onEditAvatar={handleEditAvatarClick}/>
           <div className="elements">
             <ul className="elements-list">
-              {cards.map((card) => { return (<Card key={card._id} name={card.name} link={card.link} likes={card.likes} />)})}
+              {cards.map((card) => { return (<Card key={card._id} name={card.name} link={card.link} likes={card.likes} onClick={handleCardClick} />)})}
             </ul>
           </div>      
           <Footer/>
@@ -74,14 +87,9 @@ function App() {
               <input id="avatar-url-input" type="url" placeholder="Ссылка на картинку" className="popup__input popup__input_type_link" name="link" required/>
               <span className="popup__error avatar-url-input-error url-input-error url-input-error-avatar"></span>
             </PopupWithForm>}
-          
-          
-        </div>
-        
-        <template className="element-template">
-          
-        </template>
-      
+
+          {selectedCard && <ImagePopup title={selectedCard.name} link={selectedCard.link}  onClose={closeAllPopups} name="image" isOpen={popupOpen}/>}
+        </div>        
     </div>
   );
 }
