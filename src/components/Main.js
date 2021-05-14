@@ -20,9 +20,9 @@ function Main({onEditProfile, onAddPlace, onEditAvatar}) {
   return (
   <main className="main">
     <section className="profile">
-      <div className="profile__avatar-container" style={{ backgroundImage: `url(${userAvatar})` }}>
-        <img className="profile__avatar"  alt={userName}/>
-        <button className="profile__avatar-button" onClick={onEditAvatar} type="button" ariaLabel="Кнопка редактирования"></button>
+      <div className="profile__avatar-container" >
+        <img className="profile__avatar" style={{ backgroundImage: `url(${userAvatar})` }}  alt={userName}/>
+        <button className="profile__avatar-button" onClick={onEditAvatar} type="button" aria-label="Кнопка редактирования"></button>
       </div>
       <div className="profile__info">
         <div className="profile__wrapper">

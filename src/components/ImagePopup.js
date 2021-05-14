@@ -2,7 +2,7 @@ import React from 'react';
 
 function ImagePopup ({ name, title, link, onClose, isOpen }) {
     return (
-      <section className={`popup popup_type_${name} ${isOpen}`}>
+      <section className={`popup popup_type_${name} ${isOpen}`} onClick={onClose}>
         <div className="popup__container">
           <img className="popup__picture"  alt={title} src={link} />
           <p className="popup__caption">{title}</p>
