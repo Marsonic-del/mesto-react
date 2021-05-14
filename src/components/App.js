@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import Card from './Card';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import api from '../utils/Api';
@@ -39,10 +38,8 @@ function App() {
     }
   }, [])
 
-  function handleCardClick (e) {
-    setSelectedCard(cards.find(card => 
-      card.link === e.target.src
-    ))
+  function handleCardClick (name, link) {
+    setSelectedCard({name, link})
     setImagePopupOpen(true);
     setIsPopupOpen
     ('popup_opened');
@@ -76,7 +73,7 @@ function App() {
     setEditAvatarPopupOpen(false);
     setImagePopupOpen(false);
     setRemovePopupOpen(false);
-    setSelectedCard(false);
+    setSelectedCard({});
   }
   return (
     <div className="App">
@@ -85,12 +82,10 @@ function App() {
           <Header/>
           <Main onEditProfile={handleEditProfileClick} 
                 onAddPlace={handleAddPlaceClick}
-                onEditAvatar={handleEditAvatarClick}/>
-          <div className="elements">
-            <ul className="elements-list">
-              {cards.map((card) => { return (<Card key={card._id} name={card.name} link={card.link} likes={card.likes} onClick={handleCardClick} onClickTrashButton={handleTrashButtonClick} />)})}
-            </ul>
-          </div>      
+                onEditAvatar={handleEditAvatarClick}
+                onCardClick={handleCardClick}
+                onTrashClick={handleTrashButtonClick}
+                cards={cards} />      
           <Footer/>
 
           {isAddPlacePopupOpen && <PopupWithForm isOpen={popupOpen} onClose={closeAllPopups} name="add-card" title="Новое место" buttonName="Сохранить" >
@@ -115,7 +110,7 @@ function App() {
           {isRemovePopupOpen && <PopupWithForm isOpen={popupOpen} onClose={closeAllPopups} name="remove" title="Вы уверены?" buttonName="Да" >   
             </PopupWithForm>}
 
-          {isImagePopupOpen && <ImagePopup title={selectedCard.name} link={selectedCard.link}  onClose={closeAllPopups} name="image" isOpen={popupOpen} card={selectedCard} />}
+          {isImagePopupOpen && <ImagePopup onClose={closeAllPopups} name="image" isOpen={popupOpen} card={selectedCard} />}
         </div>        
     </div>
   );

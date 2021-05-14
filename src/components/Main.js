@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import api from '../utils/Api';
+import Card from './Card';
 
 
-function Main({onEditProfile, onAddPlace, onEditAvatar}) {
+function Main({onEditProfile, onAddPlace, onEditAvatar, cards, onCardClick, onTrashClick }) {
   const [userName, setUserName] = useState('');
   const [userDescription, setUserDescription] = useState('');
   const [userAvatar, setUserAvatar] = useState('');
@@ -32,6 +33,11 @@ function Main({onEditProfile, onAddPlace, onEditAvatar}) {
         <p className="profile__heading-description">{userDescription}</p>
       </div>
       <button className="profile__add-button" onClick={onAddPlace} type="button" aria-label="Кнопка добавить"></button>
+    </section>
+    <section className="elements">
+      <ul className="elements-list">
+       {cards.map((card) => { return (<Card key={card._id} name={card.name} link={card.link} likes={card.likes} onCardClick={onCardClick} onRemoveClick={onTrashClick}  />)})}
+      </ul>
     </section>
   </main>
   );
