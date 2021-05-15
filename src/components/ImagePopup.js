@@ -20,7 +20,7 @@ function ImagePopup ({ name, onClose, isOpen, handleClickClose, card }) {
         <div className="popup__container">
           <img className="popup__picture"  alt={card.name} src={card.link} />
           <p className="popup__caption">{card.name}</p>
-          <button type="button" className="popup__button-close" aria-label="Закрыть попап" onClick={onClose}></button>
+          <button type="button" onClick={onClose} className="popup__button-close" aria-label="Закрыть попап" ></button>
         </div>
       </section>
     )

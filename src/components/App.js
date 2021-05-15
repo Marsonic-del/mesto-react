@@ -32,7 +32,7 @@ function App() {
 
   function handleClickClose(evt) {
     const evtTarget = evt.target;
-    if (evtTarget.classList.contains('popup') || evtTarget.classList.contains('popup__close')) {
+    if (evtTarget.classList.contains('popup') || evtTarget.classList.contains('popup__button-close')) {
       closeAllPopups();
     }
   }
