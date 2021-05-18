@@ -78,6 +78,10 @@
       }),
     }).then(this._checkResponse);
   }
+
+  changeLikeCardStatus(idCard, isLiked) {
+    return isLiked ? this.deleteLike(idCard) : this.addLike(idCard)
+  }
 }
 const api = new Api({
   address: 'https://mesto.nomoreparties.co/v1/cohort-22',
