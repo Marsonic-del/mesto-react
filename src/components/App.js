@@ -8,6 +8,7 @@ import api from '../utils/api';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
 import EditProfilePopup  from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
+import AddPlacePopup from './AddPlacePopup';
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
@@ -17,7 +18,40 @@ function App() {
   const [isRemovePopupOpen, setRemovePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
-  console.log(Math.random())
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    api.getInitialCards()
+      .then(data => {
+        setCards(data)
+      })
+      .catch((err) => console.log(err));
+  }, [])
+
+  // Функция для добавления/удаления лайков
+  // Используется при клике на кнопку лайк карточки
+  function handleCardLike({likes, _id}) { // Аргументы функции: лайки и id карточки.
+    // Снова проверяем, есть ли уже лайк на этой карточке
+    const isLiked = likes.some(i => i._id === currentUser._id);
+    
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    api.changeLikeCardStatus(_id, isLiked).then((newCard) => {
+        setCards((cards) => cards.map((c) => c._id === _id ? newCard : c));
+        console.log(cards)
+    });
+}
+  // Функция для удаления карточки
+  // Используется при клике на кнопку удаления карточки
+  // Удалять можна только карточки добавленные пользователем 
+  function handleCardDelete(idCard) {
+    api.removeCard(idCard).then(() => { setCards((cards) => cards.filter(item => {return item._id !== idCard}) )})
+  }
+
+  function handleAddPlaceSubmit(newPlace) {
+    api.addCard(newPlace)
+      .then((newCard) => setCards([...cards, newCard]))
+  }
+  
 
   useEffect(() => {
     api.getUserInfo()
@@ -83,17 +117,15 @@ function App() {
             <Main onEditProfile={handleEditProfileClick} 
                 onAddPlace={handleAddPlaceClick}
                 onEditAvatar={handleEditAvatarClick}
-                onCardClick={handleCardClick} />      
+                onCardClick={handleCardClick}
+                cards={cards}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelete} />      
             <Footer/>
 
-            <PopupWithForm isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}  handleClickClose={handleClickClose} name="add-card" title="Новое место" buttonName="Сохранить" >
-              <input id="place-input" type="text" placeholder="Название" className="popup__input popup__input_type_name" name="name" required minLength="2" maxLength="30"/>
-              <span className="popup__error place-input-error"></span>
-              <input id="url-input" type="url" placeholder="Ссылка на картинку" className="popup__input popup__input_type_link" name="link" required/>
-              <span className="popup__error url-input-error"></span>
-            </PopupWithForm>
-
             
+
+            <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} handleClickClose={handleClickClose} onAddPlace={handleAddPlaceSubmit} />
             
             <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} handleClickClose={handleClickClose} />
 

@@ -4,40 +4,14 @@ import Card from './Card';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
 
 
-function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
+function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, cards,
+  onCardLike, onCardDelete }) {
   //Подписка на контекст, через который получаем данные пользователя
   // (методом api.getUserInfo() в компоненте App)
   const currentUser = React.useContext(CurrentUserContext);
-  const [cards, setCards] = useState([]);
-
   
 
-  // Функция для добавления/удаления лайков
-  // Используется при клике на кнопку лайк карточки
-  function handleCardLike({likes, _id}) { // Аргументы функции: лайки и id карточки.
-    // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = likes.some(i => i._id === currentUser._id);
-    
-    // Отправляем запрос в API и получаем обновлённые данные карточки
-    api.changeLikeCardStatus(_id, isLiked).then((newCard) => {
-        setCards((cards) => cards.map((c) => c._id === _id ? newCard : c));
-        console.log(cards)
-    });
-}
-  // Функция для удаления карточки
-  // Используется при клике на кнопку удаления карточки
-  // Удалять можна только карточки добавленные пользователем 
-  function handleCardDelete(idCard) {
-    api.removeCard(idCard).then(() => { setCards((cards) => cards.filter(item => {return item._id !== idCard}) )})
-  }
-
-  useEffect(() => {
-    api.getInitialCards()
-      .then(data => {
-        setCards(data)
-      })
-      .catch((err) => console.log(err));
-  }, [])
+  
   
   return (
   <main className="main">
@@ -57,7 +31,7 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
     </section>
     <section className="elements">
       <ul className="elements-list">
-       {cards.map((card) => { return (<Card key={card._id} {...card} onCardClick={onCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />)})}
+       {cards.map((card) => { return (<Card key={card._id} {...card} onCardClick={onCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete} />)})}
       </ul>
     </section>
   </main>
