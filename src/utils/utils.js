@@ -1,7 +1,9 @@
 //Функция отображения ожидания загрузки(типа спиннер)
-export { renderLoading };
-function renderLoading(text) {
-  const popupOpened = document.querySelector('.popup_opened');
-  const submitBtn = popupOpened.querySelector('.popup__button');
-  submitBtn.textContent = text;
+
+function renderLoading(submitButton, loading) {
+  const text = "Сохранить";
+  const loadingText = "Сохранение...";
+  submitButton.innerText = loading ? loadingText : text;
 }
+
+export default renderLoading ;

@@ -9,6 +9,7 @@ import {CurrentUserContext} from '../contexts/CurrentUserContext';
 import EditProfilePopup  from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import renderLoading from '../utils/utils';
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
@@ -37,7 +38,6 @@ function App() {
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api.changeLikeCardStatus(_id, isLiked).then((newCard) => {
         setCards((cards) => cards.map((c) => c._id === _id ? newCard : c));
-        console.log(cards)
     });
 }
   // Функция для удаления карточки
@@ -47,9 +47,13 @@ function App() {
     api.removeCard(idCard).then(() => { setCards((cards) => cards.filter(item => {return item._id !== idCard}) )})
   }
 
-  function handleAddPlaceSubmit(newPlace) {
+  function handleAddPlaceSubmit({submitButtonRef, ...newPlace}) {
+    renderLoading(submitButtonRef, true);
     api.addCard(newPlace)
-      .then((newCard) => setCards([...cards, newCard]))
+      .then(newCard => {
+        setCards([...cards, newCard]);
+        renderLoading(submitButtonRef, false);
+      })
   }
   
 
@@ -61,18 +65,22 @@ function App() {
       .catch((err) => console.log(err));
   }, [])
 
-  function handleUpdateUser(userInfo) {
+  function handleUpdateUser({submitButtonRef, ...userInfo}) {
+    renderLoading(submitButtonRef, true);
     api.editProfile(userInfo)
       .then(data => {
-        setCurrentUser(data)
+        setCurrentUser(data);
+        renderLoading(submitButtonRef, false);
       })
       .catch((err) => console.log(err));
   }
 
-  function handleUpdateAvatar(newAvatar) {
+  function handleUpdateAvatar(newAvatar, submitButtonRef) {
+    renderLoading(submitButtonRef, true);
     api.editAvatar(newAvatar)
       .then(data => {
-        setCurrentUser(data)
+        setCurrentUser(data);
+        renderLoading(submitButtonRef, false);
       })
       .catch((err) => console.log(err));
   }

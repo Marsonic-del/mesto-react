@@ -55,16 +55,9 @@
     }).then(this._checkResponse);
   }
 
-  addLike(idCard) {
+  changeLikeCardStatus(idCard, isLiked) {
     return fetch(`${this._address}/cards/likes/${idCard}`, {
-      method: 'PUT',
-      headers: this._headers,
-    }).then(this._checkResponse);
-  }
-
-  deleteLike(idCard) {
-    return fetch(`${this._address}/cards/likes/${idCard}`, {
-      method: 'DELETE',
+      method: isLiked ? 'DELETE' : 'PUT',
       headers: this._headers,
     }).then(this._checkResponse);
   }
@@ -77,10 +70,6 @@
         avatar: link,
       }),
     }).then(this._checkResponse);
-  }
-
-  changeLikeCardStatus(idCard, isLiked) {
-    return isLiked ? this.deleteLike(idCard) : this.addLike(idCard)
   }
 }
 const api = new Api({

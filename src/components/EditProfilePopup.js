@@ -10,21 +10,36 @@ function EditProfilePopup({isOpen, onClose, onUpdateUser, handleClickClose}) {
 
     const handleNameChange = (e) => {setName(e.target.value)}
     const handleDescriptionChange = (e) => {setDescription(e.target.value)}
-    const handleSubmit = (e) => {
-        // Запрещаем браузеру переходить по адресу формы
-        e.preventDefault();
-
+    const handleSubmit = (submitButtonRef) => { 
         // Передаём значения управляемых компонентов во внешний обработчик
         onUpdateUser({
             name,
             about: description,
-  });
+            submitButtonRef,
+        });
     }
+
+    
     // После загрузки текущего пользователя из API
     // его данные будут использованы в управляемых компонентах.
-    React.useEffect(() => {
-        setName(currentUser.name);
-        setDescription(currentUser.about);
+    React.useEffect(() => {// Создаём промис
+        const newPromise = new Promise((resolve, reject) => {
+            const {name, about, avatar, _id, cohort} = currentUser;
+            if (name, about, avatar, _id, cohort) {
+                resolve(currentUser)
+            } else {
+                reject('Данные пользователя отсутсвуют');
+            }
+        });
+        
+        newPromise
+          .then((value) => { 
+            setName(value.name);
+            setDescription(value.about);
+          })
+          .catch((value) => { 
+              console.log(value + ', нам жаль :(');
+          }) 
       }, [currentUser]);
 
     return (

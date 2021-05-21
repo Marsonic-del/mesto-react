@@ -9,19 +9,16 @@ function AddPlacePopup({isOpen, onClose, handleClickClose, onAddPlace}) {
         const target = e.target;
         target.type === "url" ? setLink(target.value) : setName(target.value)
     };
-    const handleSubmit = (e) => {
-        // Запрещаем браузеру переходить по адресу формы
-        e.preventDefault();
-
+    const handleSubmit = (submitButtonRef) => {
         // Передаём значения управляемых компонентов во внешний обработчик
         onAddPlace({
             name,
             link,
+            submitButtonRef,
         });
         name = '';
         link = '';
     }
-    const handleLinkChange = (e) => {};
 
     return (
         <PopupWithForm isOpen={isOpen} onClose={onClose}  handleClickClose={handleClickClose} onSubmit={handleSubmit} name="add-card" title="Новое место" buttonName="Сохранить" >

@@ -3,9 +3,8 @@ import PopupWithForm from './PopupWithForm';
 
 function EditAvatarPopup({isOpen, onClose, onUpdateAvatar, handleClickClose}) {
     const avatarInput = React.useRef();
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onUpdateAvatar(avatarInput.current.value,);
+    const handleSubmit = (submitButtonRef) => {
+        onUpdateAvatar(avatarInput.current.value, submitButtonRef);
         avatarInput.current.value = '';
     }
 
