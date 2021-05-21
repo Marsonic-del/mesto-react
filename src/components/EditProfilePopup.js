@@ -18,8 +18,7 @@ function EditProfilePopup({isOpen, onClose, onUpdateUser, handleClickClose}) {
             submitButtonRef,
         });
     }
-
-    
+  
     // После загрузки текущего пользователя из API
     // его данные будут использованы в управляемых компонентах.
     React.useEffect(() => {// Создаём промис

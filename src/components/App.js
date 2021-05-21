@@ -52,7 +52,9 @@ function App() {
     api.addCard(newPlace)
       .then(newCard => {
         setCards([...cards, newCard]);
-        renderLoading(submitButtonRef, false);
+      })
+      .finally(() => {
+        renderLoading(submitButtonRef, false)
       })
   }
   
@@ -70,9 +72,11 @@ function App() {
     api.editProfile(userInfo)
       .then(data => {
         setCurrentUser(data);
-        renderLoading(submitButtonRef, false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        renderLoading(submitButtonRef, false)
+      })
   }
 
   function handleUpdateAvatar(newAvatar, submitButtonRef) {
@@ -80,9 +84,11 @@ function App() {
     api.editAvatar(newAvatar)
       .then(data => {
         setCurrentUser(data);
-        renderLoading(submitButtonRef, false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        renderLoading(submitButtonRef, false)
+      })
   }
 
   function handleCardClick (name, link) {
