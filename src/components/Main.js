@@ -9,9 +9,6 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, cards,
   // (методом api.getUserInfo() в компоненте App)
   const currentUser = React.useContext(CurrentUserContext);
   
-
-  
-  
   return (
   <main className="main">
     <section className="profile">

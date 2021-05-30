@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup({isOpen, onClose, handleClickClose, onAddPlace}) {
-    let [name, setName] = useState('');
-    let [link, setLink] = useState('');
+    const [name, setName] = useState('');
+    const [link, setLink] = useState('');
 
     const handlePlaceChange = (e) => {
         const target = e.target;
@@ -16,8 +16,8 @@ function AddPlacePopup({isOpen, onClose, handleClickClose, onAddPlace}) {
             link,
             submitButtonRef,
         });
-        name = '';
-        link = '';
+       setName('');
+        setLink('');
     }
 
     return (

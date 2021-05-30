@@ -13,9 +13,9 @@ function EditProfilePopup({isOpen, onClose, onUpdateUser, handleClickClose}) {
     const handleSubmit = (submitButtonRef) => { 
         // Передаём значения управляемых компонентов во внешний обработчик
         onUpdateUser({
+            submitButtonRef,
             name,
             about: description,
-            submitButtonRef,
         });
     }
   
@@ -23,8 +23,7 @@ function EditProfilePopup({isOpen, onClose, onUpdateUser, handleClickClose}) {
     // его данные будут использованы в управляемых компонентах.
     React.useEffect(() => {// Создаём промис
         const newPromise = new Promise((resolve, reject) => {
-            const {name, about, avatar, _id, cohort} = currentUser;
-            if (name, about, avatar, _id, cohort) {
+            if (currentUser.name && currentUser.about) {
                 resolve(currentUser)
             } else {
                 reject('Данные пользователя отсутсвуют');
@@ -33,13 +32,15 @@ function EditProfilePopup({isOpen, onClose, onUpdateUser, handleClickClose}) {
         
         newPromise
           .then((value) => { 
-            setName(value.name);
-            setDescription(value.about);
+            if(isOpen) {
+                setName(value.name);
+                setDescription(value.about)
+            } 
           })
           .catch((value) => { 
               console.log(value + ', нам жаль :(');
           }) 
-      }, [currentUser]);
+      }, [currentUser, isOpen]);
 
     return (
         <PopupWithForm isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}  handleClickClose={handleClickClose} name="edit-profile" title="Редактировать&nbsp;профиль" buttonName="Сохранить" >

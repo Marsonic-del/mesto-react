@@ -12,11 +12,11 @@ import AddPlacePopup from './AddPlacePopup';
 import renderLoading from '../utils/utils';
 
 function App() {
-  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
-  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
-  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
-  const [isImagePopupOpen, setImagePopupOpen] = useState(false);
-  const [isRemovePopupOpen, setRemovePopupOpen] = useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+  const [isRemovePopupOpen, setIsRemovePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
@@ -36,23 +36,28 @@ function App() {
     const isLiked = likes.some(i => i._id === currentUser._id);
     
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    api.changeLikeCardStatus(_id, isLiked).then((newCard) => {
+    api.changeLikeCardStatus(_id, isLiked)
+    .then((newCard) => {
         setCards((cards) => cards.map((c) => c._id === _id ? newCard : c));
-    });
+    })
+    .catch((err) => console.log(err));
 }
   // Функция для удаления карточки
   // Используется при клике на кнопку удаления карточки
   // Удалять можна только карточки добавленные пользователем 
   function handleCardDelete(idCard) {
-    api.removeCard(idCard).then(() => { setCards((cards) => cards.filter(item => {return item._id !== idCard}) )})
+    api.removeCard(idCard)
+    .then(() => { setCards((cards) => cards.filter(item => {return item._id !== idCard}) )})
+    .catch((err) => console.log(err));
   }
 
   function handleAddPlaceSubmit({submitButtonRef, ...newPlace}) {
     renderLoading(submitButtonRef, true);
     api.addCard(newPlace)
       .then(newCard => {
-        setCards([...cards, newCard]);
+        setCards([newCard, ...cards]);
       })
+      .catch((err) => console.log(err))
       .finally(() => {
         renderLoading(submitButtonRef, false)
       })
@@ -93,19 +98,19 @@ function App() {
 
   function handleCardClick (name, link) {
     setSelectedCard({name, link})
-    setImagePopupOpen(true);
+    setIsImagePopupOpen(true);
   }
 
   function handleEditProfileClick() {
-    setEditProfilePopupOpen(true);  
+    setIsEditProfilePopupOpen(true);  
   }
 
   function handleAddPlaceClick() {
-    setAddPlacePopupOpen(true); 
+    setIsAddPlacePopupOpen(true); 
   }
 
   function handleEditAvatarClick() {
-    setEditAvatarPopupOpen(true);
+    setIsEditAvatarPopupOpen(true);
   }
 
   function handleClickClose(evt) {
@@ -116,11 +121,11 @@ function App() {
   }
 
   function closeAllPopups() {
-    setEditProfilePopupOpen(false);
-    setAddPlacePopupOpen(false);
-    setEditAvatarPopupOpen(false);
-    setImagePopupOpen(false);
-    setRemovePopupOpen(false);
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+    setIsEditAvatarPopupOpen(false);
+    setIsImagePopupOpen(false);
+    setIsRemovePopupOpen(false);
     setSelectedCard({});
   }
   return (
