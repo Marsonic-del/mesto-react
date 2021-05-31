@@ -32,10 +32,8 @@ function EditProfilePopup({isOpen, onClose, onUpdateUser, handleClickClose}) {
         
         newPromise
           .then((value) => { 
-            if(isOpen) {
-                setName(value.name);
-                setDescription(value.about)
-            } 
+            setName(value.name);
+            setDescription(value.about); 
           })
           .catch((value) => { 
               console.log(value + ', нам жаль :(');

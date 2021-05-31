@@ -56,6 +56,7 @@ function App() {
     api.addCard(newPlace)
       .then(newCard => {
         setCards([newCard, ...cards]);
+        closeAllPopups();
       })
       .catch((err) => console.log(err))
       .finally(() => {
@@ -77,6 +78,7 @@ function App() {
     api.editProfile(userInfo)
       .then(data => {
         setCurrentUser(data);
+        closeAllPopups();
       })
       .catch((err) => console.log(err))
       .finally(() => {
@@ -89,6 +91,7 @@ function App() {
     api.editAvatar(newAvatar)
       .then(data => {
         setCurrentUser(data);
+        closeAllPopups();
       })
       .catch((err) => console.log(err))
       .finally(() => {

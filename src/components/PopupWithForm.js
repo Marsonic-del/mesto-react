@@ -26,7 +26,7 @@ function PopupWithForm({name, title, isOpen, onClose, buttonName, handleClickClo
               <button type="button" className="popup__button-close" onClick={onClose} aria-label="Закрыть попап"></button>
               <h3 className="popup__heading">{title}</h3>
               {children}
-              <button type="submit" ref={submitButtonRef} className="popup__button" onClick={onClose} aria-label={buttonName}>
+              <button type="submit" ref={submitButtonRef} className="popup__button"  aria-label={buttonName}>
               {buttonName}
               </button>
             </form>
